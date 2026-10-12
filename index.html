@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vrinda Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0B0B0B;--panel:#131313;--panel2:#1A1A1A;--line:#242424;--text:#fff;--muted:#8E8E8E;--acc:#F26A1B;--btn:linear-gradient(180deg,#F8782A 0%,#D8560A 100%);--ink:#fff;--ok:#1FCB84;--bad:#F04848;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#0B0B0B;--panel:#131313;--panel2:#1A1A1A;--line:#242424;--text:#fff;--muted:#8E8E8E;--acc:#F26A1B;--ink:#fff;--ok:#1FCB84;--bad:#F04848}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 'Poppins',system-ui,sans-serif}
+h1,h2,h3,.brand,.big{font-family:'Exo 2','Poppins',sans-serif}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.muted{color:var(--muted)}
+.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;padding:12px 28px;border-bottom:1px solid var(--line);background:#0F0F0F}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:24px;letter-spacing:.08em;color:var(--acc)}
+.pill{border:1px solid var(--ok);color:var(--ok);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:500;background:rgba(31,203,132,.08);cursor:pointer;min-height:44px}
+.pill.off{border-color:var(--bad);color:var(--bad);background:rgba(240,72,72,.08)}
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;max-width:1360px;margin:0 auto;padding:24px 28px}
+aside{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+main>.panel{margin-top:20px}
+.panel>h2{font-size:22px;font-weight:700;color:var(--acc);margin:0 0 6px}
+.avatar{width:56px;height:56px;border-radius:50%;background:var(--btn);display:grid;place-items:center;font:800 24px 'Exo 2',sans-serif;flex:none}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+nav.panel{display:flex;flex-direction:column;gap:4px;padding:12px}
+.nb{display:flex;align-items:center;gap:12px;background:none;border:0;text-align:left;padding:12px 14px;border-radius:10px;color:#C4C4C4;cursor:pointer;min-height:44px;white-space:nowrap;font-weight:500}
+.nb:hover{background:var(--panel2)}
+.nb[aria-current=page]{background:var(--panel2);color:#fff;box-shadow:inset 3px 0 0 var(--acc)}
+.nb[aria-current=page] .ic{color:var(--acc)}
+main{min-width:0;padding-bottom:110px}
+h1{font-size:30px;font-weight:700;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 20px;max-width:64ch}
+.note{color:var(--muted);font-size:13px;margin-top:32px}
+.tools{display:flex;gap:10px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));padding:28px 8px}
+.stat{text-align:center;padding:4px 16px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat h3{font-size:19px;font-weight:600;color:var(--acc);margin:0 0 18px}
+.stat .big{display:block;font-size:42px;font-weight:800;line-height:1.1}
+.stat small{display:block;margin-top:8px;color:var(--muted);font-weight:600}
+.row>span:empty{display:none}.row input{min-width:200px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px 20px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}
+.panel>.row:last-child{border-bottom:0;padding-bottom:4px}
+.row b{font-weight:500;display:block}.row small{display:block;color:var(--muted);font-size:13px}
+.sel{display:flex;gap:8px;flex-wrap:wrap}
+select,input{background:var(--panel2);border:1px solid #2C2C2C;border-radius:8px;padding:9px 12px;min-height:44px}
+select:hover,input:hover{border-color:#3C3C3C}
+select:disabled,input:disabled{opacity:.4}
+.sw{width:46px;height:26px;border-radius:13px;border:1px solid #333;background:#2A2A2A;position:relative;padding:0;cursor:pointer;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#8E8E8E}
+.sw.on{background:var(--btn);border-color:var(--acc)}.sw.on::after{left:22px;background:#fff}
+@media (prefers-reduced-motion:no-preference){.sw,.sw::after,.btn{transition:all .15s}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--btn);color:var(--ink);border:0;border-radius:8px;padding:11px 20px;font-weight:600;cursor:pointer;min-height:44px}
+.btn:hover{filter:brightness(1.08)}.btn:active{transform:translateY(1px)}
+.btn.ghost{background:var(--panel2);border:1px solid #2C2C2C;font-weight:500}
+.btn.ghost:hover{border-color:var(--acc);color:var(--acc);filter:none}
+.btn.danger{background:var(--bad)}
+.ev{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.panel>.ev:last-child{border-bottom:0}
+.tag{font-weight:600}.tag.b{color:var(--ok)}.tag.r{color:var(--acc)}.tag.p{color:var(--bad)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.filters button{background:var(--panel2);border:1px solid #2C2C2C;border-radius:999px;padding:8px 16px;cursor:pointer;min-height:44px}
+.filters button[aria-pressed=true]{background:var(--btn);border-color:var(--acc);color:#fff}
+form{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
+form input{flex:1 1 220px}
+.err{color:var(--bad);min-height:24px;margin:0}
+#bar{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--acc);padding:14px 28px calc(14px + env(safe-area-inset-bottom,0px));display:none;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#bar.show{display:flex}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:var(--btn);color:#fff;padding:10px 20px;border-radius:8px;font-weight:500;display:none;max-width:90vw}
+#toast.show{display:block}
+.shell.solo{grid-template-columns:minmax(0,1fr);max-width:1000px}
+.servers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:8px}
+.sc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:28px 20px}
+.sc .avatar{width:72px;height:72px;font-size:30px}
+.sc b{font:700 19px 'Exo 2',sans-serif}
+.lgcat{border-bottom:1px solid var(--line)}.lgcat:last-child{border-bottom:0}
+.lgh{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;padding:8px 0}
+.lgt{background:none;border:0;font:700 17px 'Exo 2',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:#fff;min-height:44px;padding:0}
+.lgt .ic{width:16px;height:16px;color:var(--muted)}.lgt[aria-expanded=true] .ic{transform:rotate(90deg);color:var(--acc)}
+.lgb{padding:0 0 14px 6px}
+.chip{font-size:13px;border:1px solid #2C2C2C;border-radius:999px;padding:5px 12px;color:var(--ok)}
+input[type=checkbox]{min-height:0;padding:0;width:20px;height:20px;accent-color:var(--acc);flex:none}
+.btn.ghost[aria-pressed=true]{border-color:var(--acc);color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:6px}
+.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin:22px 0 0}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:12px 16px;color:var(--muted);cursor:pointer;font-weight:500;min-height:44px;white-space:nowrap}
+.tab:hover{color:#fff}.tab[aria-selected=true]{color:var(--acc);border-bottom-color:var(--acc)}
+.tabs+.panel,.tabs+*{margin-top:20px}
+.gl{font-size:12px;font-weight:600;color:var(--muted);padding:14px 14px 4px}
+@media (max-width:860px){
+.gl{display:none}
+.shell{grid-template-columns:1fr;padding:16px;gap:16px}
+nav.panel{flex-direction:row;overflow-x:auto}
+.top{padding:12px 16px}
+.stat{border-left:0}
+.row{grid-template-columns:minmax(0,1fr) auto}.row .sel,.row>select,.row>input{grid-column:1/-1}
+}
+a.btn{text-decoration:none}img.avatar{object-fit:cover}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:26px;height:26px"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>VRINDA</div><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span id="who" class="muted"></span><button id="status" class="pill" data-act="master" aria-label="Turn protection on or off">Protection on</button><button id="logout" class="btn ghost" data-act="logout" hidden>Log out</button></div></header>
+<div class="shell">
+<aside><div class="panel" id="srv"></div><nav class="panel" id="nav" aria-label="Dashboard sections"></nav></aside>
+<main id="main"></main>
+</div>
+<div id="bar"><span>You have unsaved changes.</span><span style="display:flex;gap:10px"><button class="btn ghost" data-act="reset"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg>Discard</button><button class="btn" data-act="save"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>Save changes</button></span></div>
+<div id="toast" role="status"></div>
+<script>
+const LIM=['Instant','2 per 60s','3 per 10s','3 per 30s','5 per 30s'],PUN=['Ban','Kick','Strip roles','Timeout'],AA=['Delete message','Warn','Timeout','Kick','Ban'],WHO=['Everyone','Moderators','Admins','Server owner'];
+const md=(id,n,d,o,a,ov,av,on=true)=>({id,t:'mod',n,d,o,a,def:{on,o:ov,a:av}});
+const sw_=(id,n,d,df)=>({id,t:'sw',n,d,def:df}),sel_=(id,n,d,o,df)=>({id,t:'sel',n,d,o,def:df||o[0]}),txt_=(id,n,d,ph,df='')=>({id,t:'txt',n,d,ph,def:df}),h_=n=>({t:'h',n}),ch_=(id,n,d,on)=>({id,t:'ch',n,d,def:{on,v:''}});
+const an=(id,n,d,l,p,off)=>md('an.'+id,n,d,LIM,PUN,l,p,!off),au=(id,n,d,o,ov,a,off)=>md('au.'+id,n,d,o,AA,ov,a,!off),cm=(id,d,w)=>md('cm.'+id,'/'+id,d,WHO,null,w,null);
+const F={
+antinuke:[an('channel','Channel guard','Blocks mass channel creation and deletion.','3 per 10s','Ban'),an('role','Role guard','Stops role creation, deletion and edit sprees.','3 per 10s','Ban'),an('massban','Mass ban and kick','Limits how many members one account can remove.','3 per 30s','Strip roles'),an('perm','Permission guard','Reverts dangerous grants such as Administrator.','Instant','Strip roles'),an('bot','Bot add guard','Removes bots added by anyone who is not whitelisted.','Instant','Kick'),an('hook','Webhook guard','Deletes webhooks created without approval.','Instant','Kick'),an('vanity','Vanity URL guard','Restores your vanity link if someone changes it.','Instant','Ban'),an('server','Server settings guard','Reverts name, icon and verification changes.','Instant','Strip roles'),an('ping','@everyone guard','Blocks unapproved @everyone and @here pings.','2 per 60s','Timeout',1)],
+automod:[h_('Filters'),au('spam','Spam filter','Catches fast message floods.',['3 in 3s','5 in 5s','8 in 10s'],'5 in 5s','Timeout'),au('dup','Duplicate messages','Catches the same message sent again and again.',['3 repeats','5 repeats','8 repeats'],'3 repeats','Delete message'),au('ment','Mass mentions','Limits mentions in one message.',['3 mentions','5 mentions','10 mentions'],'5 mentions','Timeout'),au('inv','Invite links','Removes Discord invites.',['All invites','Other servers only'],'Other servers only','Delete message'),au('link','Link filter','Blocks phishing and unsafe links.',['Unsafe links','All links'],'Unsafe links','Delete message'),au('caps','Excess capitals','Catches messages written mostly in capitals.',['50% capitals','70% capitals','90% capitals'],'70% capitals','Delete message',1),au('emoji','Emoji spam','Limits emoji in one message.',['6 emoji','10 emoji','15 emoji'],'10 emoji','Delete message',1),h_('Blocked words'),txt_('au.words','Blocked words','Separate words with commas.','word1, word2'),h_('Ignore'),sw_('au.ibots','Ignore bots','Automod skips messages from bots.',true),sw_('au.iadmin','Ignore administrators','Members with the Administrator permission are skipped by every filter.',true),sw_('au.imod','Ignore moderators','Members with a moderator role are skipped by every filter.',false)],
+moderation:[h_('Warnings'),sel_('mo.wt','Timeout after','Automatic timeout once a member reaches this many warnings.',['Never','2 warnings','3 warnings','5 warnings'],'3 warnings'),sel_('mo.wk','Kick after','',['Never','3 warnings','5 warnings','7 warnings']),sel_('mo.wb','Ban after','',['Never','5 warnings','7 warnings','10 warnings']),sel_('mo.we','Warnings expire after','',['Never','7 days','30 days','90 days'],'30 days'),h_('Actions'),sel_('mo.tl','Default timeout length','Used when a timeout has no length.',['10 minutes','1 hour','1 day','1 week'],'1 hour'),sw_('mo.reason','Require a reason','Moderators must enter a reason for every action.',true),sw_('mo.dm','Message the member','Send the member a private message when they are actioned.',true),h_('Team'),txt_('mo.roles','Moderator roles','Members with these roles can use moderation commands.','@Moderator, @Admin'),txt_('mo.appeal','Appeal link','Shown to members who are banned.','Link to your appeal form')],
+joingate:[h_('Verification'),sw_('jg.verify','Verification','New members must verify before they see your channels.',false),sel_('jg.method','Method','',['Button','Captcha','Question']),txt_('jg.chan','Verification channel','','#verify'),txt_('jg.role','Verified role','Given to members who pass.','@Member'),sel_('jg.kick','Remove unverified members after','',['Never','10 minutes','1 hour','24 hours']),h_('Account checks'),sel_('jg.age','Minimum account age','',['No minimum','1 day','7 days','30 days']),sw_('jg.avatar','Block default avatars','Accounts with no profile picture fail the check.',false),sel_('jg.act','When an account fails a check','',['Kick','Ban','Send to review']),h_('Raid shield'),md('jg.raid','Raid shield','Acts when many accounts join at once.',['10 joins in 10s','15 joins in 30s','20 joins in 60s'],['Lock server','Kick new members','Ban new members'],'10 joins in 10s','Lock server'),sw_('jg.alert','Alert moderators during a raid','',true)],
+logs:[h_('Log channels'),ch_('lg.mod','Moderation actions','Warnings, timeouts, kicks and bans.',true),ch_('lg.an','Anti-nuke actions','Blocked and reverted server changes.',true),ch_('lg.au','Automod actions','Messages removed and members actioned.',true),ch_('lg.join','Joins and leaves','Who joined, who left and verification results.',false),ch_('lg.msg','Message edits and deletes','',false),ch_('lg.srv','Channel and role changes','',false),sw_('lg.bots','Ignore bot messages','Leave bots out of message logs.',true)],
+commands:[h_('General'),txt_('cm.prefix','Prefix','Members type this before a command.','!','!'),sw_('cm.slash','Slash commands','Let members use / commands.',true),sel_('cm.cool','Cooldown per member','',['None','3 seconds','10 seconds'],'3 seconds'),txt_('cm.off','Disabled channels','Commands do not work in these channels.','#general'),h_('Who can use each command'),cm('setup','Open the setup menu.','Admins'),cm('warn','Warn a member.','Moderators'),cm('timeout','Timeout a member.','Moderators'),cm('kick','Kick a member.','Moderators'),cm('ban','Ban a member.','Admins'),cm('unban','Unban a member.','Admins'),cm('purge','Delete many messages.','Moderators'),cm('lockdown','Lock a channel or the server.','Admins'),cm('whitelist','Manage the anti-nuke whitelist.','Server owner'),cm('help','List commands.','Everyone')]};
+const META={antinuke:['Anti-nuke','Choose which destructive actions Vrinda watches for, how many it allows, and what happens to an account that goes over the limit. Whitelisted users are exempt.'],automod:['Automod','Filter messages automatically. Pick how strict each filter is and what happens when it triggers.'],moderation:['Moderation','Set how warnings escalate and how moderation commands behave.'],joingate:['Join gate','Check new members before they reach your channels, and shield the server during raids.'],logs:['Logs','Choose where Vrinda reports each kind of action.'],commands:['Commands','Set your prefix and decide who can use each command.']};
+const EV=[['Blocked','@unknown tried to delete #general','Channel guard','2 min ago'],['Reverted','Administrator removed from @helper','Permission guard','19 min ago'],['Punished','@bot_adder lost their roles for adding an unapproved bot','Bot add guard','1 hour ago'],['Blocked','Webhook creation in #chat','Webhook guard','3 hours ago'],['Reverted','Vanity link restored','Vanity URL guard','Yesterday'],['Punished','@spammer banned for removing 4 members','Mass ban and kick','Yesterday']];
+F.logs.splice(F.logs.length-1,0,ch_('lg.ban','Bans and unbans','',false),ch_('lg.voice','Voice activity','Joins, leaves and moves in voice channels.',false),ch_('lg.nick','Member role and nickname changes','',false),ch_('lg.inv','Invites','Invites created and deleted.',false),ch_('lg.emoji','Emoji and sticker changes','',false));
+const LOGC=[['an','Anti-nuke','Blocked actions|Reverted changes|Punishments|Whitelist changes',1],['app','Applications','Bot added|Bot removed|Command permissions changed'],['chan','Channels','Channel created|Channel deleted|Channel updated|Permission overwrites changed'],['dam','Discord AutoMod','Rule created|Rule updated|Rule deleted|Message blocked|Member flagged'],['emoji','Emojis','Emoji created|Emoji deleted|Emoji renamed'],['event','Events','Event created|Event updated|Event deleted|Event started or ended'],['inv','Invites','Invite created|Invite deleted|Invite used'],['msg','Messages','Message deleted|Message edited|Bulk delete|Message pinned or unpinned'],['poll','Polls','Poll created|Poll ended'],['role','Roles','Role created|Role deleted|Role updated|Role given or removed'],['stage','Stage','Stage started|Stage ended|Speaker changes'],['srv','Server','Server settings changed|Icon or banner changed|Vanity URL changed|Verification level changed'],['sticker','Stickers','Sticker created|Sticker deleted|Sticker updated'],['sound','Soundboard','Sound added|Sound removed|Sound updated'],['thread','Threads','Thread created|Thread deleted|Thread archived|Thread updated'],['user','Users','Member joined|Member left|Nickname changed|Roles changed|Username or avatar changed'],['voice','Voice','Joined voice|Left voice|Moved voice|Muted or deafened'],['hook','Webhooks','Webhook created|Webhook deleted|Webhook updated'],['mod','Moderation','Warning|Timeout|Kick|Ban|Unban',1]];
+const LTYPES=LOGC.flatMap(c=>c[2].split('|').map((n,i)=>'lg.'+c[0]+'.'+i));
+F.logs=[txt_('lg.default','Default log channel','Used by any log type that has no channel of its own.','#logs'),sw_('lg.bots','Ignore bot messages','Leave bots out of message logs.',true),...LOGC.flatMap(c=>c[2].split('|').map((n,i)=>ch_('lg.'+c[0]+'.'+i,n,'',!!c[3])))];
+F.commands.push(cm('giveaway','Start a giveaway.','Moderators'),cm('ticket','Post a ticket panel.','Admins'),cm('rank','Show a member\'s level.','Everyone'));
+Object.assign(F,{
+welcome:[h_('Welcome message'),sw_('wc.on','Welcome new members','Greet every new member when they join.',false),txt_('wc.chan','Welcome channel','','#welcome'),sel_('wc.type','Message type','',['Text','Embed','Image card']),txt_('wc.msg','Message','Use {user}, {server} and {count}.','Welcome {user} to {server}!','Welcome {user} to {server}!'),sw_('wc.dm','Also send a private message','',false),h_('Leave message'),sw_('wc.leave','Leave message','Post a message when someone leaves.',false),txt_('wc.lchan','Leave channel','','#goodbye'),h_('Auto roles'),txt_('wc.roles','Roles given on join','','@Member'),sel_('wc.delay','Give roles','',['Immediately','After verification'])],
+leveling:[h_('XP'),sw_('lv.on','Leveling','Members earn XP for chatting.',false),sel_('lv.rate','XP per message','',['5 to 10','10 to 20','15 to 25'],'10 to 20'),sel_('lv.cool','XP cooldown','Time between messages that earn XP.',['30 seconds','60 seconds','2 minutes'],'60 seconds'),txt_('lv.noxp','No-XP channels and roles','','#bot-commands'),h_('Level-ups'),sel_('lv.ann','Announce level-ups','',['In the same channel','In a set channel','Private message','Off']),txt_('lv.chan','Announcement channel','Used when announcing in a set channel.','#levels'),txt_('lv.rewards','Level roles','One per level, for example Level 5: @Active.','Level 5: @Active, Level 10: @Regular'),sw_('lv.board','Public leaderboard','Anyone can view the server leaderboard.',true),sw_('lv.reset','Reset XP when a member leaves','',false)],
+tickets:[h_('Panel'),sw_('tk.on','Tickets','Members open private support tickets.',false),txt_('tk.panel','Panel channel','Where the open-ticket button is posted.','#support'),txt_('tk.cat','Ticket category','New tickets are created here.','Tickets'),txt_('tk.staff','Support roles','These roles can see every ticket.','@Support'),h_('Rules'),sel_('tk.max','Open tickets per member','',['1','2','3','5']),sw_('tk.reason','Ask for a reason when closing','',true),sw_('tk.tx','Save a transcript on close','',true),txt_('tk.tchan','Transcript channel','','#ticket-logs'),sel_('tk.auto','Close inactive tickets after','',['Never','24 hours','3 days','7 days'])],
+giveaways:[h_('Giveaways'),sw_('gv.on','Giveaways','Let staff start giveaways.',false),txt_('gv.chan','Default channel','','#giveaways'),txt_('gv.role','Giveaway manager role','','@Staff'),sel_('gv.win','Default winners','',['1','2','3','5']),txt_('gv.req','Entry requirement','Optional. A role or level members need to enter.','@Member'),sw_('gv.dm','Message the winners','',true),sw_('gv.ping','Ping a role for new giveaways','',false)],
+settings:[h_('General'),sel_('st.lang','Language','',['English','Hindi','Arabic','Spanish','French','Portuguese','Turkish','Russian','Indonesian']),sel_('st.tz','Time zone','',['UTC','India (IST)','US Eastern','Central Europe'])]});
+Object.assign(META,{welcome:['Welcome','Greet new members, say goodbye, and give roles automatically.'],leveling:['Leveling','Reward active members with XP, levels and roles.'],tickets:['Tickets','Private support tickets for your members.'],giveaways:['Giveaways','Run giveaways in your server.'],settings:['Settings','Language and time zone for this server.']});
+const num_=(id,n,d,df)=>({id,t:'num',n,d,def:df});
+F.aux=[num_('an.wllimit','Whitelist limit','The most users who can be whitelisted in this server. Choose 1 to 50.','5')];
+const GROUPS=[['',[['overview','Overview']]],['Protection',[['antinuke','Anti-nuke'],['automod','Automod'],['joingate','Join gate']]],['Management',[['moderation','Moderation'],['logs','Logs'],['commands','Commands']]],['Community',[['welcome','Welcome'],['leveling','Leveling'],['tickets','Tickets'],['giveaways','Giveaways']]],['Server',[['settings','Settings']]]];
+const SECTIONS=GROUPS.flatMap(g=>g[1]);
+let SERVERS=[];
+const IC={'overview': '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>', 'antinuke': '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>', 'automod': '<path d="M3 5h18l-7 8v6l-4 2v-8z"/>', 'moderation': '<path d="M14 4l6 6-3 3-6-6z"/><path d="M11 7L4 14l3 3 7-7"/><path d="M3 21h8"/>', 'joingate': '<path d="M15 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>', 'logs': '<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7M9 8h3"/>', 'commands': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 10l3 2-3 2M13 15h4"/>', 'whitelist': '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><path d="M17 5a3.5 3.5 0 010 6.5M18 14c2.5.7 4 2.7 4 6"/>', 'chev': '<path d="M9 6l6 6-6 6"/>', 'send': '<path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/>', 'plus': '<path d="M12 5v14M5 12h14"/>', 'x': '<path d="M6 6l12 12M18 6L6 18"/>', 'check': '<path d="M4 12l5 5L20 6"/>', 'undo': '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/>'};const ic=k=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
+Object.assign(IC,{welcome:'<circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.5 2 4 2s3-.5 4-2M9 9.5h.01M15 9.5h.01"/>',leveling:'<path d="M3 20h18"/><path d="M6 20v-6M12 20V8M18 20v-9"/>',tickets:'<path d="M4 7h16v4a2 2 0 000 4v4H4v-4a2 2 0 000-4z"/><path d="M14 7v12"/>',giveaways:'<rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M3 13h18M12 9c-3 0-4-4-1.5-4S12 9 12 9zm0 0c3 0 4-4 1.5-4S12 9 12 9z"/>',settings:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>'});
+const KEY='vrinda-dash-preview-v3',ALL=Object.values(F).flat().filter(f=>f.t!=='h');
+const def=()=>({master:true,wl:['@owner','@trusted_admin'],L:{bots:[],roles:[],owners:[],mgr:[],igch:[],igrole:[],iguser:[]},v:Object.fromEntries(ALL.map(f=>[f.id,JSON.parse(JSON.stringify(f.def))]))});
+function load(s){const d=def();if(s&&typeof s==='object'){d.master=s.master!==false;if(Array.isArray(s.wl))d.wl=s.wl;if(s.L)Object.assign(d.L,s.L);if(s.v)Object.assign(d.v,s.v)}return d}
+let server=null,saved=def(),cur=JSON.parse(JSON.stringify(saved)),view='overview',filter='All',err='',errs={},subs={},logUI={open:{},q:'',mass:false,sel:{},all:false,setcat:null};
+{const h=location.hash.slice(1);if(SECTIONS.some(s=>s[0]===h))view=h}
+const $=s=>document.querySelector(s),clone=o=>JSON.parse(JSON.stringify(o));
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dirty=()=>JSON.stringify(cur)!==JSON.stringify(saved);
+const sw=(on,label,act)=>`<button class="sw${on?' on':''}" role="switch" aria-checked="${!!on}" aria-label="${esc(label)}" data-act="${act}"></button>`;
+const opts=(a,v)=>a.map(x=>`<option${x===v?' selected':''}>${esc(x)}</option>`).join('');
+const evRow=e=>`<div class="ev"><div><span class="tag ${({Blocked:'b',Reverted:'r',Punished:'p'})[e[0]]||''}">${e[0]}</span> ${esc(e[1])}<div class="muted" style="font-size:13px">${e[2]}</div></div><span class="muted" style="white-space:nowrap">${e[3]}</span></div>`;
+function field(f){
+if(f.t==='h')return `<h2>${f.n}</h2>`;
+const v=cur.v[f.id],n=esc(f.n),info=`<div><b>${n}</b>${f.d?`<small>${esc(f.d)}</small>`:''}</div>`;
+if(f.t==='sw')return `<div class="row">${info}<span></span>${sw(v,f.n,'sw:'+f.id)}</div>`;
+if(f.t==='sel')return `<div class="row">${info}<span></span><select aria-label="${n}" data-sel="v:${f.id}">${opts(f.o,v)}</select></div>`;
+if(f.t==='txt')return `<div class="row">${info}<span></span><input aria-label="${n}" data-txt="${f.id}" value="${esc(v)}" placeholder="${esc(f.ph||'')}" autocomplete="off"></div>`;
+if(f.t==='ch')return `<div class="row">${info}${sw(v.on,f.n,'sw:'+f.id)}<input aria-label="${n} channel" data-txt="${f.id}" value="${esc(v.v)}" placeholder="#channel"${v.on?'':' disabled'} autocomplete="off"></div>`;
+if(f.t==='num')return `<div class="row">${info}<span></span><input type="number" min="1" max="50" inputmode="numeric" aria-label="${n}" data-txt="${f.id}" value="${esc(v)}" style="min-width:0;width:120px"></div>`;
+const d=!v.on||(f.id.startsWith('an.')&&!cur.master);
+return `<div class="row">${info}${sw(v.on,f.n,'sw:'+f.id)}<div class="sel"><select aria-label="${n} setting" data-sel="o:${f.id}"${d?' disabled':''}>${opts(f.o,v.o)}</select>${f.a?`<select aria-label="${n} action" data-sel="a:${f.id}"${d?' disabled':''}>${opts(f.a,v.a)}</select>`:''}</div></div>`}
+function summ(s){
+const m=F[s].filter(f=>f.t==='mod'),on=m.filter(f=>cur.v[f.id].on).length,V=cur.v;
+if(s==='welcome'){const o=V['wc.on'];return o&&!V['wc.chan'].trim()?['Choose a welcome channel',1]:[o?'Welcome messages on':'Welcome messages off',0]}
+if(s==='leveling')return [V['lv.on']?'Leveling on':'Leveling off',0];
+if(s==='tickets'){const o=V['tk.on'];return o&&(!V['tk.panel'].trim()||!V['tk.staff'].trim())?['Add a panel channel and support roles',1]:[o?'Tickets on':'Tickets off',0]}
+if(s==='giveaways'){const o=V['gv.on'];return o&&!V['gv.chan'].trim()?['Choose a giveaway channel',1]:[o?'Giveaways on':'Giveaways off',0]}
+if(s==='settings')return [V['st.lang']+', '+V['st.tz'],0];
+if(s==='antinuke'&&cur.wl.length>wlLimit())return ['Whitelist is over its limit ('+cur.wl.length+' of '+wlLimit()+')',1];
+if(s==='antinuke')return cur.master?[`${on} of ${m.length} protections on`,0]:['Paused',1];
+if(s==='automod')return [`${on} of ${m.length} filters on`,0];
+if(s==='commands')return [`${on} of ${m.length} commands enabled`,0];
+if(s==='moderation')return [V['mo.wt']==='Never'?'No automatic timeout':'Timeout after '+V['mo.wt'],0];
+if(s==='logs'){const c=F.logs.filter(f=>f.t==='ch'),a=c.filter(f=>V[f.id].on),b=V['lg.default'].trim()?0:a.filter(f=>!V[f.id].v.trim()).length;return b?[`${b} log ${b>1?'types need':'type needs'} a channel`,1]:[`${a.length} of ${c.length} log types on`,0]}
+if(V['jg.verify']&&(!V['jg.chan'].trim()||!V['jg.role'].trim()))return ['Add a verification channel and role',1];
+return [`Verification ${V['jg.verify']?'on':'off'}, raid shield ${V['jg.raid'].on?'on':'off'}`,0]}
+const wlLimit=()=>Math.min(50,Math.max(1,parseInt(cur.v['an.wllimit'])||5));
+const protAll=()=>['antinuke','automod'].flatMap(k=>F[k].filter(f=>f.t==='mod'));
+const protOn=()=>protAll().filter(f=>cur.v[f.id].on).length;
+function overview(){
+const S=Object.keys(META).map(k=>[k,...summ(k)]),att=S.filter(x=>x[2]).length;
+return `<h1>Overview</h1><p class="sub">${cur.master?'Protection is on.':'Protection is paused. Vrinda will not act on server changes.'} ${att?`${att} ${att>1?'areas need':'area needs'} attention.`:'<span style="color:var(--ok)">Everything is set up.</span>'}</p>
+<div class="panel stats"><div class="stat"><h3>Protections</h3><span class="big">${protOn()}</span><small>of ${protAll().length} active</small></div><div class="stat"><h3>Whitelist</h3><span class="big">${cur.wl.length}</span><small>of ${wlLimit()} allowed</small></div><div class="stat"><h3>Attention</h3><span class="big" style="color:${att?'var(--bad)':'var(--ok)'}">${att}</span><small>${att?'areas to fix':'all clear'}</small></div><div class="stat"><h3>Events</h3><span class="big">${EV.length}</span><small>in the sample log</small></div></div>
+${GROUPS.filter(g=>g[1].some(x=>META[x[0]])).map(g=>`<div class="panel"><h2>${g[0]}</h2>${g[1].filter(x=>META[x[0]]).map(x=>{const y=S.find(z=>z[0]===x[0]);return `<div class="row"><div><b>${META[x[0]][0]}</b><small style="color:${y[2]?'var(--bad)':'var(--muted)'}">${esc(y[1])}</small></div><span></span><button class="btn ghost" data-view="${x[0]}">Set up${ic('chev')}</button></div>`}).join('')}</div>`).join('')}
+<div class="panel"><h2>Recent events</h2>${EV.slice(0,3).map(evRow).join('')}</div>`}
+const normCh=v=>/^#/.test(v)?v:'#'+v;
+const setCh=(ids,v)=>{v=normCh(v);ids.forEach(id=>{cur.v[id].v=v;cur.v[id].on=true})};
+function logList(){
+const q=logUI.q.trim().toLowerCase(),M=logUI.mass;let out='';
+for(const c of LOGC){
+const ids=c[2].split('|').map((n,i)=>({n,id:'lg.'+c[0]+'.'+i})),vis=q?ids.filter(t=>t.n.toLowerCase().includes(q)||c[1].toLowerCase().includes(q)):ids;
+if(!vis.length)continue;
+const open=q?true:!!logUI.open[c[0]],chs=ids.map(t=>cur.v[t.id].v.trim()),set=chs.filter(Boolean).length,same=set===ids.length&&new Set(chs).size===1?chs[0]:'';
+out+=`<div class="lgcat"><div class="lgh"><button class="lgt" data-lgopen="${c[0]}" aria-expanded="${open}">${ic('chev')}${esc(c[1])}</button><span style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">${same?`<span class="chip">${esc(same)}</span>`:`<span class="muted" style="font-size:13px">${set} of ${ids.length} with a channel</span>`}<button class="btn ghost" data-act="lg-cat:${c[0]}">Set category channel</button></span></div>`;
+if(open){out+='<div class="lgb">';
+if(logUI.setcat===c[0])out+=`<div class="tools" style="margin:4px 0 8px"><input id="lgCat" aria-label="Channel for ${esc(c[1])}" placeholder="#channel" autocomplete="off"><button class="btn" data-act="lg-cat-apply:${c[0]}">Apply to category</button><button class="btn ghost" data-act="lg-cat-clear:${c[0]}">Remove channels</button></div>`;
+out+=vis.map(t=>{const v=cur.v[t.id];return `<div class="row"><div style="display:flex;gap:12px;align-items:center;min-width:0">${M?`<input type="checkbox" data-lgsel="${t.id}" aria-label="Select ${esc(t.n)}"${logUI.sel[t.id]?' checked':''}>`:''}<b>${esc(t.n)}</b></div>${sw(v.on,t.n,'sw:'+t.id)}<input aria-label="${esc(t.n)} channel" data-txt="${t.id}" value="${esc(v.v)}" placeholder="#channel" autocomplete="off"${v.on?'':' disabled'}></div>`}).join('')+'</div>'}
+out+='</div>'}
+return out||'<p class="muted">No log types match your search.</p>'}
+function logTypes(){
+const n=LTYPES.filter(id=>logUI.sel[id]).length;
+return `<div class="panel"><p class="muted" style="margin:0">Log every action in this server. Click a category name to see its log types, and give each type its own channel.</p><input type="search" data-lq aria-label="Search for types" placeholder="Search for types" value="${esc(logUI.q)}" style="width:100%;margin:16px 0 12px"><div class="tools"><button class="btn ghost" data-act="lg-all">Set channel for all types</button><button class="btn ghost" data-act="lg-clear">Remove channel for all types</button><button class="btn ghost" data-act="lg-mass" aria-pressed="${logUI.mass}">${ic('check')}Mass edit</button></div>${logUI.all?`<div class="tools" style="margin-top:12px"><input id="lgAll" aria-label="Channel for all types" placeholder="#channel" autocomplete="off"><button class="btn" data-act="lg-all-apply">Apply to all types</button></div>`:''}${logUI.mass?`<div class="tools" style="margin-top:12px;align-items:center"><span class="muted">${n} selected</span><button class="btn ghost" data-act="lg-selall">Select all</button><button class="btn ghost" data-act="lg-selnone">Clear</button><input id="lgMass" aria-label="Channel for selected types" placeholder="#channel" autocomplete="off"><button class="btn" data-act="lg-mass-apply">Set channel for selected</button></div>`:''}<div id="logList" style="margin-top:8px">${logList()}</div></div>`}
+const LM={wl:{ph:'@username',pre:'@',lim:()=>wlLimit(),full:()=>'Whitelist is full ('+wlLimit()+' users). Remove someone or raise the limit.'},bots:{ph:'@bot',pre:'@'},roles:{ph:'@role',pre:'@'},owners:{ph:'@username',pre:'@'},mgr:{ph:'@role',pre:'@'},igch:{ph:'#channel',pre:'#'},igrole:{ph:'@role',pre:'@'},iguser:{ph:'@username',pre:'@'}};
+const listRef=f=>f==='wl'?cur.wl:cur.L[f];
+function listPanel(f,title,desc){const M=LM[f],L=listRef(f),lim=M.lim?M.lim():0;
+return `<div class="panel"><h2>${title}</h2><p class="muted" style="margin:0 0 4px">${desc}${lim?` ${L.length} of ${lim} spots used.`:''}${lim&&L.length>lim?` <span style="color:var(--bad)">Over the limit: remove ${L.length-lim} or raise the limit.</span>`:''}</p><form data-form="${f}"><input aria-label="${title}" placeholder="${M.ph}" autocomplete="off"><button class="btn" type="submit">${ic('plus')}Add</button></form><p class="err" role="alert">${esc(errs[f]||'')}</p>${L.length?L.map((u,i)=>`<div class="row"><b>${esc(u)}</b><span></span><button class="btn danger" data-rm="${f}:${i}" aria-label="Remove ${esc(u)}">${ic('x')}Remove</button></div>`).join(''):'<p class="muted">Nothing added yet.</p>'}</div>`}
+function evPanel(){const f=['All','Blocked','Reverted','Punished'];return `<div class="panel"><h2>Recent events</h2><p class="muted" style="margin:0 0 12px">Sample events. Once connected, this shows every action Vrinda takes.</p><button class="btn" data-act="test">${ic('send')}Send a test log</button><div class="filters">${f.map(x=>`<button data-filter="${x}" aria-pressed="${x===filter}">${x}</button>`).join('')}</div>${EV.filter(e=>filter==='All'||e[0]===filter).map(evRow).join('')}</div>`}
+const EX={
+antinuke:[{t:'Whitelisted users',f:()=>listPanel('wl','Whitelisted users','These users can change channels, roles and settings without triggering Vrinda. Only add people you trust completely.')+`<div class="panel">${field(F.aux[0])}</div>`},
+{t:'Whitelisted bots',f:()=>listPanel('bots','Whitelisted bots','These bots can be added and can act without being removed or punished.')},
+{t:'Whitelisted roles',f:()=>listPanel('roles','Whitelisted roles','Members with these roles are exempt from every anti-nuke limit.')},
+{t:'Extra owners',f:()=>listPanel('owners','Extra owners','Full control of Vrinda in this server, the same as the server owner. Choose carefully.')},
+{t:'Manager roles',f:()=>listPanel('mgr','Manager roles','Members with these roles can change Vrinda\'s settings and use setup commands.')}],
+automod:[{t:'Ignore',f:()=>listPanel('igch','Ignored channels','Applies to every automod filter. Automod does not check messages in these channels.')+listPanel('igrole','Ignored roles','Members with these roles are skipped by every filter.')+listPanel('iguser','Ignored users','These users are skipped by every filter.')}],
+logs:[{t:'Recent events',f:evPanel}],
+settings:[{t:'Danger zone',f:()=>`<div class="panel"><h2>Danger zone</h2><div class="row"><div><b>Reset all settings</b><small>Sets every Vrinda module for this server back to its defaults.</small></div><span></span><button class="btn danger" data-act="resetall">${ic('undo')}Reset all</button></div></div>`}]};
+function tabsFor(k){
+if(k==='logs')return [{t:'Types',h:[],ex:logTypes()},{t:'Settings',h:[field(F.logs[0]),field(F.logs[1])],ex:''},{t:'Recent events',h:[],ex:evPanel()}];
+const T=[];let g=null;
+if(k==='antinuke'){g={t:'Protections',h:[`<div class="row"><div><b>Protection</b><small>Turn every anti-nuke module on or off at once.</small></div><span></span>${sw(cur.master,'Protection','master')}</div>`],ex:''};T.push(g)}
+F[k].forEach(f=>{if(f.t==='h'){g={t:f.n,h:[],ex:''};T.push(g)}else{if(!g){g={t:'Settings',h:[],ex:''};T.push(g)}g.h.push(field(f))}});
+(EX[k]||[]).forEach(x=>{const m=T.find(y=>y.t===x.t);if(m)m.ex+=x.f();else T.push({t:x.t,h:[],ex:x.f()})});
+return T}
+function section(k){
+const T=tabsFor(k),ti=Math.min(subs[k]||0,T.length-1),single=T.length===1,x=T[ti];
+const grp=GROUPS.find(g=>g[1].some(y=>y[0]===k))[0];
+const tl=F[k].some(f=>['sw','mod','ch'].includes(f.t));
+let out=`<div class="crumb">${grp} / ${META[k][0]}${single?'':' / '+x.t}</div><h1>${META[k][0]}</h1><p class="sub">${META[k][1]}</p>${tl?`<div class="tools"><button class="btn ghost" data-act="all:${k}:1">${ic('check')}Enable all</button><button class="btn ghost" data-act="all:${k}:0">${ic('x')}Disable all</button><button class="btn ghost" data-act="rst:${k}">${ic('undo')}Reset to defaults</button></div>`:''}`;
+if(!single)out+=`<div class="tabs" role="tablist">${T.map((y,i)=>`<button class="tab" role="tab" aria-selected="${i===ti}" data-sub="${i}">${y.t}</button>`).join('')}</div>`;
+if(x.h.length)out+=`<div class="panel">${single?`<h2>${x.t}</h2>`:''}${x.h.join('')}</div>`;
+return out+x.ex}
+function whitelist(){
+return `<h1>Whitelist</h1><p class="sub">These users can change channels, roles and settings without triggering Vrinda. Only add people you trust completely.</p>
+<div class="panel"><h2>Trusted users</h2><p class="muted" style="margin:0 0 4px">${cur.wl.length} of ${wlLimit()} spots used.${cur.wl.length>wlLimit()?` <span style="color:var(--bad)">Over the limit: remove ${cur.wl.length-wlLimit()} or raise the limit.</span>`:''} <button class="btn ghost" style="min-height:36px;padding:6px 12px;margin-left:6px" data-view="antinuke">Change limit</button></p><form data-form="wl"><input id="wlName" aria-label="Username" placeholder="@username" autocomplete="off"><button class="btn" type="submit">${ic('plus')}Add user</button></form><p class="err" role="alert">${esc(err)}</p>`+
+(cur.wl.length?cur.wl.map((u,i)=>`<div class="row"><b>${esc(u)}</b><span></span><button class="btn danger" data-rm="${i}" aria-label="Remove ${esc(u)}">${ic('x')}Remove</button></div>`).join(''):'<p class="muted">No one is whitelisted. Add a user who is allowed to make server changes.</p>')+'</div>'}
+function bar(){$('#bar').classList.toggle('show',!!server&&dirty())}
+let me=null,booting=true,loadErr='',saving=false;
+async function api(path,opt){const o=opt||{};const r=await fetch(path,{credentials:'same-origin',method:o.method||'GET',headers:o.body?{'Content-Type':'application/json'}:{},body:o.body});let j=null;try{j=await r.json()}catch(e){}return {ok:r.ok,status:r.status,j}}
+const av=v=>v.icon?`<img class="avatar" src="https://cdn.discordapp.com/icons/${v.id}/${v.icon}.png?size=128" alt="">`:`<div class="avatar">${esc(v.i)}</div>`;
+const inviteUrl=id=>`https://discord.com/oauth2/authorize?client_id=${me.clientId}&scope=bot%20applications.commands&permissions=8&guild_id=${id}&disable_guild_select=true`;
+const loginView=()=>`<div class="panel sc" style="max-width:480px;margin:40px auto"><div class="avatar">V</div><h1 style="margin:0">Vrinda Dashboard</h1><p class="muted" style="margin:0">Log in with Discord to manage your servers.</p><a class="btn" href="/api/auth/login">${ic('joingate')}Login with Discord</a></div>`;
+const errView=()=>`<div class="panel"><h2>Something went wrong</h2><p class="muted">${esc(loadErr)}</p><button class="btn" data-act="refresh">${ic('undo')}Try again</button></div>`;
+function picker(){return `<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-end"><div><h1>Select a server</h1><p class="sub" style="margin-bottom:0">Choose a server to manage with Vrinda. Only servers where you can manage the server are shown.</p></div><button class="btn ghost" data-act="refresh">${ic('undo')}Refresh servers</button></div>${SERVERS.length?`<div class="servers">${SERVERS.map(v=>`<div class="panel sc">${av(v)}<b>${esc(v.n)}</b>${v.bot?`<span style="color:var(--ok);font-size:13px">Vrinda is active</span><button class="btn" data-pick="${v.id}">Manage${ic('chev')}</button>`:`<span class="muted" style="font-size:13px">Vrinda is not in this server</span><a class="btn ghost" href="${inviteUrl(v.id)}" target="_blank" rel="noopener">Invite Vrinda</a>`}</div>`).join('')}</div>`:'<div class="panel" style="margin-top:20px"><p class="muted" style="margin:0">No servers found. You need the Manage Server permission in a server to see it here.</p></div>'}`}
+async function boot(){let r=null;try{r=await api('/api/me')}catch(e){}
+booting=false;
+if(!r)loadErr='Could not reach the server. Check your internet and try again.';
+else if(r.status===401)me=null;
+else if(r.ok){me=r.j;SERVERS=(r.j.guilds||[]).map(g=>({id:g.id,n:g.name,i:(g.name||'?').charAt(0).toUpperCase(),icon:g.icon,bot:g.bot}))}
+else loadErr='Something went wrong while loading your servers.';
+render()}
+async function pickServer(id){let r=null;try{r=await api('/api/guilds/'+id+'/settings')}catch(e){}
+if(r&&r.status===401){toast('Your session expired. Log in again.');me=null;server=null;render();return}
+if(!r||!r.ok){toast("Could not load this server's settings.");return}
+server=id;saved=load(r.j.settings);cur=clone(saved);render();scrollTo(0,0)}
+async function doSave(){if(saving)return;saving=true;let r=null;try{r=await api('/api/guilds/'+server+'/settings',{method:'PUT',body:JSON.stringify(cur)})}catch(e){}saving=false;
+if(r&&r.ok){saved=clone(cur);toast('Changes saved');render()}
+else if(r&&r.status===401){toast('Your session expired. Log in again.');me=null;server=null;render()}
+else toast('Could not save'+(r&&r.j&&r.j.error?': '+r.j.error:'. Try again.'))}
+async function logout(){try{await api('/api/auth/logout',{method:'POST'})}catch(e){}me=null;server=null;SERVERS=[];render()}
+function render(){
+const sv=SERVERS.find(v=>v.id===server);
+document.querySelector('.shell').classList.toggle('solo',!sv);document.querySelector('aside').hidden=!sv;
+const st=$('#status');st.hidden=!sv;
+$('#who').textContent=me&&me.user?me.user.name:'';$('#logout').hidden=!me;
+if(!sv){$('#main').innerHTML=booting?'<p class="muted">Loading…</p>':loadErr?errView():!me?loginView():picker();$('#bar').classList.remove('show');return}
+$('#srv').innerHTML=`<div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">${av(sv)}<div><b style="font:700 18px 'Exo 2',sans-serif;color:var(--acc)">${sv.n}</b><div class="muted" style="font-size:13px">Protected by Vrinda</div></div></div><div class="kv"><span class="muted">Protection</span><b style="color:${cur.master?'var(--ok)':'var(--bad)'}">${cur.master?'On':'Paused'}</b></div><div class="kv"><span class="muted">Protections on</span><b>${protOn()}</b></div><div class="kv"><span class="muted">Whitelisted</span><b>${cur.wl.length} / ${wlLimit()}</b></div><button class="btn ghost" style="width:100%;margin-top:12px" data-act="servers">${ic('swap')}Switch server</button>`;
+$('#nav').innerHTML=GROUPS.map(g=>(g[0]?`<div class="gl">${g[0]}</div>`:'')+g[1].map(x=>`<button class="nb" data-view="${x[0]}"${x[0]===view?' aria-current="page"':''}>${ic(x[0])}${x[1]}</button>`).join('')).join('');
+$('#main').innerHTML=(view==='overview'?overview():section(view))+'<p class="note">Changes are saved to Vrinda\'s database when you press Save changes. The bot reads them from there.</p>';
+st.textContent=cur.master?'Protection on':'Protection paused';st.className='pill'+(cur.master?'':' off');bar()}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+document.addEventListener('click',e=>{
+const t=e.target.closest('button');if(!t)return;
+if(t.dataset.pick){pickServer(t.dataset.pick);return}
+if(t.dataset.lgopen){const c=t.dataset.lgopen;logUI.open[c]=!logUI.open[c];render();return}
+if(t.dataset.sub!==undefined){subs[view]=+t.dataset.sub;render();return}
+if(t.dataset.view){view=t.dataset.view;err='';errs={};render();scrollTo(0,0);return}
+if(t.dataset.filter){filter=t.dataset.filter;render();return}
+if(t.dataset.rm!==undefined){const [f,i]=t.dataset.rm.split(':');listRef(f).splice(+i,1);render();return}
+const a=t.dataset.act;if(!a)return;
+if(a==='logout'){logout();return}
+if(a==='refresh'){loadErr='';booting=true;render();boot();return}
+if(a==='save'){doSave();return}
+if(a==='master')cur.master=!cur.master;
+else if(a.startsWith('sw:')){const id=a.slice(3),v=cur.v[id];if(typeof v==='boolean')cur.v[id]=!v;else v.on=!v.on}
+else if(a==='reset')cur=clone(saved);
+else if(a==='servers'){if(dirty())toast('Unsaved changes discarded.');server=null;view='overview'}
+else if(a==='resetall'){cur=def();toast('All settings reset. Save to keep it.')}
+else if(a.startsWith('all:')){const [,k,f]=a.split(':'),on=f==='1';F[k].forEach(x=>{if(x.t==='h')return;const v=cur.v[x.id];if(typeof v==='boolean')cur.v[x.id]=on;else if(v&&typeof v==='object')v.on=on});if(k==='antinuke'&&on)cur.master=true}
+else if(a.startsWith('rst:')){const k=a.slice(4);F[k].forEach(x=>{if(x.t!=='h')cur.v[x.id]=clone(x.def)});if(k==='antinuke')cur.master=true;toast(META[k][0]+' reset to defaults. Save to keep it.')}
+else if(a==='test'){const dl=cur.v['lg.default'].trim(),c=F.logs.filter(f=>f.t==='ch'&&cur.v[f.id].on&&(cur.v[f.id].v.trim()||dl));if(!c.length){toast('Turn on a log type and choose a channel first.');return}EV.unshift(['Test','Test log from the dashboard','Sent to '+[...new Set(c.map(f=>cur.v[f.id].v.trim()||dl))].join(', '),'Just now']);toast('Test log added. Preview only, nothing was sent to Discord.')}
+else if(a==='lg-all'){logUI.all=!logUI.all}
+else if(a==='lg-all-apply'){const v=($('#lgAll').value||'').trim();if(!v){toast('Enter a channel first.');return}setCh(LTYPES,v);logUI.all=false;toast('Channel set for all types.')}
+else if(a==='lg-clear'){LTYPES.forEach(id=>{cur.v[id].v='';cur.v[id].on=false});toast('Channels removed from all types.')}
+else if(a==='lg-mass'){logUI.mass=!logUI.mass;logUI.sel={}}
+else if(a==='lg-selall'){LTYPES.forEach(id=>logUI.sel[id]=true)}
+else if(a==='lg-selnone'){logUI.sel={}}
+else if(a==='lg-mass-apply'){const ids=LTYPES.filter(id=>logUI.sel[id]),v=($('#lgMass').value||'').trim();if(!ids.length){toast('Select at least one type.');return}if(!v){toast('Enter a channel first.');return}setCh(ids,v);toast('Channel set for '+ids.length+' types.')}
+else if(a.startsWith('lg-cat-apply:')){const c=a.slice(13),ids=LTYPES.filter(id=>id.startsWith('lg.'+c+'.')),v=($('#lgCat').value||'').trim();if(!v){toast('Enter a channel first.');return}setCh(ids,v);logUI.setcat=null}
+else if(a.startsWith('lg-cat-clear:')){const c=a.slice(13);LTYPES.filter(id=>id.startsWith('lg.'+c+'.')).forEach(id=>{cur.v[id].v='';cur.v[id].on=false});logUI.setcat=null}
+else if(a.startsWith('lg-cat:')){const c=a.slice(7);logUI.open[c]=true;logUI.setcat=c}
+render();if(a.startsWith('lg-cat:')){const el=$('#lgCat');if(el&&el.focus)el.focus()}});
+document.addEventListener('change',e=>{
+if(e.target.dataset.lgsel){logUI.sel[e.target.dataset.lgsel]=e.target.checked;render();return}
+const tn=e.target.dataset.txt;if(tn&&e.target.type==='number'){let n=parseInt(e.target.value);n=isNaN(n)?5:Math.min(50,Math.max(1,n));cur.v[tn]=String(n);render();return}
+const s=e.target.dataset.sel;if(!s)return;const [k,id]=s.split(':');if(k==='v')cur.v[id]=e.target.value;else cur.v[id][k]=e.target.value;render()});
+document.addEventListener('input',e=>{
+if(e.target.dataset.lq!==undefined){logUI.q=e.target.value;$('#logList').innerHTML=logList();return}
+const id=e.target.dataset.txt;if(!id)return;if(typeof cur.v[id]==='string')cur.v[id]=e.target.value;else cur.v[id].v=e.target.value;bar()});
+document.addEventListener('submit',e=>{
+e.preventDefault();const f=e.target.dataset.form;if(!f||!LM[f])return;
+const M=LM[f],L=listRef(f);let v=e.target.querySelector('input').value.trim();
+if(!v){errs[f]='Enter a value to add.';render();return}
+if(M.lim&&L.length>=M.lim()){errs[f]=M.full();render();return}
+if(!/^[@#]/.test(v))v=M.pre+v;
+if(L.some(u=>u.toLowerCase()===v.toLowerCase())){errs[f]=v+' is already in the list.';render();return}
+L.push(v);errs[f]='';render()});
+render();boot();
+</script>
+</body>
+</html>
